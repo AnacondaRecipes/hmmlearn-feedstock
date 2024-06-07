@@ -26,6 +26,7 @@ requirements:
     - setuptools
     - setuptools_scm >=3.3
     - pytest
+    - wheel
   run:
     - python
     - scikit-learn >=0.16,!=0.22.0
@@ -50,6 +51,7 @@ test:
     - pybind11 >=2.6
     - setuptools
     - setuptools_scm >=3.3
+    - wheel
 
 about:
   home: https://github.com/hmmlearn/hmmlearn
