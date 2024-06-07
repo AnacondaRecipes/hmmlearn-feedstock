@@ -45,7 +45,8 @@ test:
     - pip check
     # Test suite requires package to be built in place.
     - pip install -e .
-    - pytest lib/hmmlearn/tests -v  -k "not test_fit"
+    - pytest lib/hmmlearn/tests -v  --ignore="lib/hmmlearn/tests/test_gaussian_hmm.py"  # [osx and x86]
+    - pytest lib/hmmlearn/tests -v  # [not (osx and x86)]
   requires:
     - pip
     - pytest
