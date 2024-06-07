@@ -59,6 +59,9 @@ about:
   license_family: BSD
   license_file: LICENSE.txt
   summary: Hidden Markov Models in Python with scikit-learn like API.
+  description: |
+    hmmlearn is a set of algorithms for unsupervised learning and inference of Hidden Markov Models.
+    For supervised learning learning of HMMs and similar models see seqlearn.
   doc_url: https://hmmlearn.readthedocs.io/en/stable/
   dev_url: https://github.com/hmmlearn/hmmlearn
 
