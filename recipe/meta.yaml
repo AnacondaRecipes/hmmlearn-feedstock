@@ -42,8 +42,8 @@ test:
   commands:
     - pip check
     # Test suite requires package to be built in place.
-    - python setup.py develop
-    - pytest lib/hmmlearn/tests
+    - pip install -e .
+    - pytest lib/hmmlearn/tests -v
   requires:
     - pip
     - pytest
