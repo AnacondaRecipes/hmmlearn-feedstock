@@ -37,24 +37,15 @@ requirements:
     - blas=*=openblas  # [osx and x86_64]
 
 test:
-  source_files:
-    - .
   imports:
     - hmmlearn
     - hmmlearn.tests
   commands:
     - pip check
-    # Test suite requires package to be built in place.
-    - pip install -e .
-    - pytest lib/hmmlearn/tests -v
+    - python -I -mpytest --pyargs hmmlearn.tests
   requires:
     - pip
     - pytest
-    - python
-    - pybind11 >=2.6
-    - setuptools
-    - setuptools_scm >=3.3
-    - wheel
 
 about:
   home: https://github.com/hmmlearn/hmmlearn
