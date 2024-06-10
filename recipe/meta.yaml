@@ -34,6 +34,8 @@ requirements:
     - scikit-learn >=0.16,!=0.22.0
     - numpy >=1.10
     - scipy >=0.19.0
+    # mkl variant pulls in intel-openmp which conflicts with llvm-openmp. i.e. force to use openblas variant of numpy, scipy, etc.
+    - blas=*=openblas  # [osx and x86_64]
 
 test:
   source_files:
