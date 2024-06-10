@@ -73,3 +73,5 @@ extra:
   recipe-maintainers:
     - npavlovikj
     - njzjz
+  skip-lints:
+    - version_constraints_missing_whitespace
