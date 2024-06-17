@@ -1,5 +1,5 @@
 {% set name = "hmmlearn" %}
-{% set version = "0.2.8" %}
+{% set version = "0.3.2" %}
 
 package:
   name: {{ name|lower }}
@@ -7,43 +7,45 @@ package:
 
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: 696931e3dce6801cc9b78c629f543061dd7eb67a71155b03d1b39ea172a2a5f9
+  sha256: edaf485fdb1ea88da9ac642b2006c63d9950dd15d4d132f7205305d383e6f745
 
 build:
-  number: 1
-  skip: true  # [py<35]
+  number: 0
+  skip: true  # [py<38]
   script:
-    - {{ PYTHON }} setup.py build_ext
-    - {{ PYTHON }} -m pip install . --no-deps --ignore-installed -vv  # [unix]
-    - {{ PYTHON }} setup.py install --single-version-externally-managed --record record.txt  # [win]
+    - {{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-build-isolation -vv
+  missing_dso_whitelist:  # [s390x]
+    - '$RPATH/ld64.so.1'  # [s390x]
 
 requirements:
   build:
-    - python                                 # [build_platform != target_platform]
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - numpy                                  # [build_platform != target_platform]
-    - pybind11                               # [build_platform != target_platform]
     - {{ compiler('c') }}
     - {{ compiler("cxx") }}
   host:
     - pip
     - python
-    - numpy
     - pybind11 >=2.6
     - setuptools
-    - setuptools_scm
+    - setuptools_scm >=3.3
+    - wheel
   run:
     - python
-    - scikit-learn >=0.16
-    - {{ pin_compatible('numpy') }}
+    - scikit-learn >=0.16,!=0.22.0
+    - numpy >=1.10
     - scipy >=0.19.0
-    - setuptools
-    - matplotlib-base >=1.1.1
+    # mkl variant pulls in intel-openmp which conflicts with llvm-openmp. i.e. force to use openblas variant of numpy, scipy, etc.
+    - blas=*=openblas  # [osx and x86_64]
 
 test:
   imports:
     - hmmlearn
     - hmmlearn.tests
+  commands:
+    - pip check
+    - python -I -mpytest --pyargs hmmlearn.tests
+  requires:
+    - pip
+    - pytest
 
 about:
   home: https://github.com/hmmlearn/hmmlearn
@@ -51,10 +53,15 @@ about:
   license_family: BSD
   license_file: LICENSE.txt
   summary: Hidden Markov Models in Python with scikit-learn like API.
-  doc_url: https://hmmlearn.readthedocs.io/en/stable/
-  dev_url: https://hmmlearn.readthedocs.io/en/latest/
+  description: |
+    hmmlearn is a set of algorithms for unsupervised learning and inference of Hidden Markov Models.
+    For supervised learning learning of HMMs and similar models see seqlearn.
+  doc_url: https://hmmlearn.readthedocs.io/
+  dev_url: https://github.com/hmmlearn/hmmlearn
 
 extra:
   recipe-maintainers:
     - npavlovikj
     - njzjz
+  skip-lints:
+    - version_constraints_missing_whitespace
